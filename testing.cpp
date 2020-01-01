@@ -59,4 +59,30 @@ int main(void) {
     delete m;
     delete v;
     delete res;
+
+    // map column to vector and vector to column -- uncomment 
+    //  only when the respective methods are temporarily made 
+    //  public instead of private
+    /*
+    cout << "\nith_column_as_vector and map_vector_to_ith_column: "
+        << endl;
+    m = new Matrix(3,4);
+    for (int i = 0; i < 12; ++i) {
+        (m->vals)[i] = 1.0 + i;
+    }
+    cout << "Matrix: "  << endl;
+    print_matrix(m);
+    Vector * zeroth_col = m->ith_column_as_vector(0);
+    Vector * third_col = m->ith_column_as_vector(3);
+    cout << "0th col: " << endl;
+    print_vector(zeroth_col);
+    cout << "3rd col: " << endl;
+    print_vector(third_col);
+    m->map_vector_to_ith_column(zeroth_col, 1);
+    cout << "Matrix after mapping 0th col to 1st col: " << endl;
+    print_matrix(m);
+    delete m;
+    delete zeroth_col;
+    delete third_col;
+    */
 }

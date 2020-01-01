@@ -27,6 +27,10 @@ class Matrix : public LinearAlgebraObject {
         Matrix(int rows, int cols);
         ~Matrix();
         float get_matrix_entry(int row, int col);
+    
+    private:
+        Vector * ith_column_as_vector(int i);
+        void map_vector_to_ith_column(Vector * v, int i);
 };
 
 

@@ -21,6 +21,23 @@ Matrix :: ~Matrix() {
 }
 
 
+Vector * Matrix :: ith_column_as_vector(int i) {
+    Vector * ith_column = new Vector(this->num_rows);
+    for (int row = 0; row < this->num_rows; ++row) {
+        *(ith_column->vals + row) = this->get_matrix_entry(row, i);
+    }
+    return ith_column;
+}
+
+
+void Matrix :: map_vector_to_ith_column(Vector * v, int i) {
+    assert(this->num_rows == v->len);
+    for (int row = 0; row < this->num_rows; ++row) {
+        (this->vals)[row * this->num_cols + i] = (v->vals)[row];
+    }
+}
+
+
 Vector :: Vector(int use_len) {
     float * arr = new float[use_len];
     len = use_len;
