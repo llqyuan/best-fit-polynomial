@@ -1,5 +1,5 @@
-#ifndef MATRIX_MathVector_OPERATIONS_H
-#define MATRIX_MathVector_OPERATIONS_H
+#ifndef MATRIX_VECTOR_OPERATIONS_H
+#define MATRIX_VECTOR_OPERATIONS_H
 
 
 class Matrix;
