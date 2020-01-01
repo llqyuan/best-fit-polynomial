@@ -11,7 +11,6 @@ class LinearAlgebraObject {
         LinearAlgebraObject();
         ~LinearAlgebraObject();
 
-        void test_will_remove(void);
         Matrix * transpose(Matrix * m);
         Vector * matrix_vector_multiply(Matrix * m, Vector * v);
         Matrix * matrix_matrix_multiply(Matrix * m1, Matrix * m2);

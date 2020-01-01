@@ -39,11 +39,6 @@ LinearAlgebraObject :: LinearAlgebraObject() {}
 LinearAlgebraObject :: ~LinearAlgebraObject() {}
 
 
-void LinearAlgebraObject :: test_will_remove(void) {
-    cout << "Called test" << endl;
-}
-
-
 float Matrix :: get_matrix_entry(int row, int col) {
     return this->vals[row * this->num_cols + col];
 }
@@ -61,7 +56,18 @@ Matrix * LinearAlgebraObject :: transpose(Matrix * m) {
 }
 
 Vector * LinearAlgebraObject :: matrix_vector_multiply(Matrix * m, Vector * v) {
-    return nullptr;
+    assert(v->len == m->num_cols);
+    const int newlen = m->num_rows;
+    Vector * newvec = new Vector(newlen);
+
+    for (int i = 0; i < newlen; ++i) {
+        float ith_entry = 0;
+        for (int j = 0; j < m->num_cols; ++j) {
+            ith_entry += *(v->vals + j) * m->get_matrix_entry(i, j);
+        }
+        *(newvec->vals + i) = ith_entry;
+    }
+    return newvec;
 }
 
 Matrix * LinearAlgebraObject :: matrix_matrix_multiply(Matrix * m1, Matrix * m2) {
