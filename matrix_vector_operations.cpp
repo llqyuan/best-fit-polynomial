@@ -1,7 +1,6 @@
 #include "matrix_vector_operations.h"
 #include "within.h"
 #include <new>
-#include <iostream>
 #include <cassert>
 
 

@@ -34,3 +34,5 @@ class Reducing {
         // reduce_column(m, v, row, col)
         bool reduce_column(Matrix * m, Vector * v, int row, int col);
 };
+
+#endif
