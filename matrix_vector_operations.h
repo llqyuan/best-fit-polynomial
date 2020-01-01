@@ -14,6 +14,10 @@ class LinearAlgebraObject {
         Matrix * transpose(Matrix * m);
         Vector * matrix_vector_multiply(Matrix * m, Vector * v);
         Matrix * matrix_matrix_multiply(Matrix * m1, Matrix * m2);
+
+    private:
+        Vector * ith_column_as_vector(Matrix * m, int i);
+        void map_vector_to_ith_column(Matrix * m, Vector * v, int i);
 };
 
 
@@ -27,10 +31,6 @@ class Matrix : public LinearAlgebraObject {
         Matrix(int rows, int cols);
         ~Matrix();
         float get_matrix_entry(int row, int col);
-    
-    private:
-        Vector * ith_column_as_vector(int i);
-        void map_vector_to_ith_column(Vector * v, int i);
 };
 
 

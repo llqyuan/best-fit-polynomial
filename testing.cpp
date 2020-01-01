@@ -61,8 +61,8 @@ int main(void) {
     delete res;
 
     // map column to vector and vector to column -- uncomment 
-    //  only when the respective methods are temporarily made 
-    //  public instead of private
+    //   only when the respective methods are temporarily made 
+    //   public instead of private
     /*
     cout << "\nith_column_as_vector and map_vector_to_ith_column: "
         << endl;
@@ -85,4 +85,26 @@ int main(void) {
     delete zeroth_col;
     delete third_col;
     */
+
+   // matrix-matrix multiplication: 
+   //   expect ( (-1, -4, -1, -4), (8, 14, 8, 14))
+   cout << "\nmatrix_matrix_multiply: " << endl;
+   Matrix * m1 = new Matrix(2, 3);
+   Matrix * m2 = new Matrix(3, 4);
+   for (int i = 0; i < 12; ++i) {
+       *(m2->vals + i) = i % 2 + i / 4;
+       if (i < 6) {
+           *(m1->vals + i) = i - 2;
+       }
+   }
+   cout << "Matrix m1: " << endl;
+   print_matrix(m1);
+   cout << "Matrix m2: " << endl;
+   print_matrix(m2);
+   cout << "Result: " << endl;
+   Matrix * result = m1->matrix_matrix_multiply(m1, m2);
+   print_matrix(result);
+   delete m1;
+   delete m2;
+   delete result;
 }

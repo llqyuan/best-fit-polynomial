@@ -21,20 +21,8 @@ Matrix :: ~Matrix() {
 }
 
 
-Vector * Matrix :: ith_column_as_vector(int i) {
-    Vector * ith_column = new Vector(this->num_rows);
-    for (int row = 0; row < this->num_rows; ++row) {
-        *(ith_column->vals + row) = this->get_matrix_entry(row, i);
-    }
-    return ith_column;
-}
-
-
-void Matrix :: map_vector_to_ith_column(Vector * v, int i) {
-    assert(this->num_rows == v->len);
-    for (int row = 0; row < this->num_rows; ++row) {
-        (this->vals)[row * this->num_cols + i] = (v->vals)[row];
-    }
+float Matrix :: get_matrix_entry(int row, int col) {
+    return this->vals[row * this->num_cols + col];
 }
 
 
@@ -56,8 +44,22 @@ LinearAlgebraObject :: LinearAlgebraObject() {}
 LinearAlgebraObject :: ~LinearAlgebraObject() {}
 
 
-float Matrix :: get_matrix_entry(int row, int col) {
-    return this->vals[row * this->num_cols + col];
+Vector * LinearAlgebraObject :: ith_column_as_vector(
+        Matrix * m, int i) {
+    Vector * ith_column = new Vector(m->num_rows);
+    for (int row = 0; row < m->num_rows; ++row) {
+        *(ith_column->vals + row) = m->get_matrix_entry(row, i);
+    }
+    return ith_column;
+}
+
+
+void LinearAlgebraObject :: map_vector_to_ith_column(
+        Matrix * m, Vector * v, int i) {
+    assert(m->num_rows == v->len);
+    for (int row = 0; row < m->num_rows; ++row) {
+        (m->vals)[row * m->num_cols + i] = (v->vals)[row];
+    }
 }
 
 
@@ -87,6 +89,20 @@ Vector * LinearAlgebraObject :: matrix_vector_multiply(Matrix * m, Vector * v) {
     return newvec;
 }
 
-Matrix * LinearAlgebraObject :: matrix_matrix_multiply(Matrix * m1, Matrix * m2) {
-    return nullptr;
+Matrix * LinearAlgebraObject :: matrix_matrix_multiply(
+        Matrix * m1, Matrix * m2) {
+    assert(m1->num_cols == m2->num_rows);
+    const int new_rowlen = m1->num_rows;
+    const int new_collen = m2->num_cols;
+    Matrix * newmat = new Matrix(new_rowlen, new_collen);
+
+    for (int col = 0; col < new_collen; ++col) {
+        Vector * m2_column = this->ith_column_as_vector(m2, col);
+        Vector * result_column = this->matrix_vector_multiply(
+            m1, m2_column);
+        this->map_vector_to_ith_column(newmat, result_column, col);
+        delete m2_column;
+        delete result_column;
+    }
+    return newmat;
 }
