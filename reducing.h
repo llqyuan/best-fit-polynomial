@@ -13,26 +13,26 @@ class Reducing {
         ~Reducing();
 
         // reduce(m, v)
-        void reduce(Matrix * m, Vector * v);
+        void reduce(Matrix * m, MathVector * v);
 
     private:
-        // row_of_first_nonzero_entry(m, v, col)
-        int row_of_first_nonzero_entry(Matrix * m, Vector * v);
+        // row_of_first_nonzero_entry(m, row, col)
+        int row_of_first_nonzero_entry(Matrix * m, int row, int col);
 
         // mult_row_by(m, v, row, factor)
         void mult_row_by(
-            Matrix * m, Vector * v, int row, float factor);
+            Matrix * m, MathVector * v, int row, float factor);
 
         // add_factor_of_row_to(m, v, add_to, added, factor)
         void add_factor_of_row_to(
-            Matrix * m, Vector * v, 
+            Matrix * m, MathVector * v, 
             int add_to, int added, float factor);
 
         // swap_rows(m, v, row_1, row_2)
-        void swap_rows(Matrix * m, Vector * v, int row_1, int row_2);
+        void swap_rows(Matrix * m, MathVector * v, int row_1, int row_2);
 
         // reduce_column(m, v, row, col)
-        bool reduce_column(Matrix * m, Vector * v, int row, int col);
+        bool reduce_column(Matrix * m, MathVector * v, int row, int col);
 };
 
 #endif

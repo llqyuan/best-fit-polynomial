@@ -1,9 +1,9 @@
-#ifndef MATRIX_VECTOR_OPERATIONS_H
-#define MATRIX_VECTOR_OPERATIONS_H
+#ifndef MATRIX_MathVector_OPERATIONS_H
+#define MATRIX_MathVector_OPERATIONS_H
 
 
 class Matrix;
-class Vector;
+class MathVector;
 
 
 class LinearAlgebraObject {
@@ -25,7 +25,7 @@ class LinearAlgebraObject {
         //   returned pointer)
         // requires: the length of v is equal to the number of
         //   columns in m
-        Vector * matrix_vector_multiply(Matrix * m, Vector * v);
+        MathVector * matrix_vector_multiply(Matrix * m, MathVector * v);
 
         // matrix_matrix_multiply(m1, m2) returns the matrix
         //   resulting from multiplying m1 with m2 (m1 * m2)
@@ -36,18 +36,18 @@ class LinearAlgebraObject {
         Matrix * matrix_matrix_multiply(Matrix * m1, Matrix * m2);
 
     private:
-        // ith_column_as_vector(m, i) returns the ith column of m 
+        // ith_column_as_ector(m, i) returns the ith column of m 
         //   as a vector
         // effects: allocates memory (must call destructor on 
         //   the returned pointer)
-        Vector * ith_column_as_vector(Matrix * m, int i);
+        MathVector * ith_column_as_vector(Matrix * m, int i);
 
         // map_vector_to_ith_column(m, v, i) maps the values of v
         //   to the ith column of m
         // effects: modifies m
         // requires: the length of v is equal to the number of rows
         //   in m
-        void map_vector_to_ith_column(Matrix * m, Vector * v, int i);
+        void map_vector_to_ith_column(Matrix * m, MathVector * v, int i);
 };
 
 
@@ -72,16 +72,16 @@ class Matrix : public LinearAlgebraObject {
 };
 
 
-class Vector : public LinearAlgebraObject {
+class MathVector : public LinearAlgebraObject {
     public:
         float * vals;
         int len;
 
         // Class constructor. Sets len to use_len
-        Vector(int use_len);
+        MathVector(int use_len);
 
         // Class destructor
-        ~Vector();
+        ~MathVector();
 };
 
 #endif
