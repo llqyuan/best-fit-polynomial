@@ -4,6 +4,8 @@
 #include "matrix_vector_operations.h"
 
 
+// Provides logic for reducing an augmented matrix to reduced row
+//   echelon form.
 class Reducing {
     public:
         // Class constructor
