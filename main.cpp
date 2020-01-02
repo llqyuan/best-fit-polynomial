@@ -14,20 +14,34 @@ struct posn {
 };
 
 
-int main(void) {
-    vector<posn> posn_list;
-    struct posn p;
-    p.x = 1;
-    p.y = 2;
-    struct posn q;
-    q.x = 3;
-    q.y = 4;
-    posn_list.push_back(p);
-    posn_list.push_back(q);
-    for (vector<posn>::iterator it = posn_list.begin();
-        it != posn_list.end();
-        ++it)
+// entry_exists(plist, x) returns true if x exists as an
+//   x coordinate in plist and false otherwise
+bool entry_exists(vector<posn> * plist, float x) 
+{
+    for (vector<posn> :: iterator it = plist.begin();
+         it != plist.end();
+         ++it)
     {
-        cout << (*it).x << ", " << (*it).y << endl;
+        if (within(x, (*it).x)) 
+        {
+            return true;
+        }
     }
+    return false;
+}
+
+
+Matrix * least_squares_matrix(vector<posn> * plist, const int degree);
+
+
+MathVector * least_squares_vector(vector<posn> * plist);
+
+
+void pretty_print_polynomial(vector<posn> * plist);
+
+
+int main(void) 
+{
+    vector<posn> posn_list;
+    
 }
