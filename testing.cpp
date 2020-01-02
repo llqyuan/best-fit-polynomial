@@ -1,5 +1,5 @@
 #include "within.h"
-#include "matrix_vector_operations.h"
+#include "linear_algebra_objects.h"
 #include "reducing.h"
 #include <iostream>
 

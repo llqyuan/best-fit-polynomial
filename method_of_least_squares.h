@@ -2,7 +2,7 @@
 #define METHOD_OF_LEAST_SQUARES_H
 
 #include "reducing.h"
-#include "matrix_vector_operations.h"
+#include "linear_algebra_objects.h"
 
 
 // Provides logic for using the method of least squares to find a 

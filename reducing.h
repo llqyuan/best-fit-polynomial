@@ -1,7 +1,8 @@
+
 #ifndef REDUCING_H
 #define REDUCING_H
 
-#include "matrix_vector_operations.h"
+#include "linear_algebra_objects.h"
 
 
 // Provides logic for reducing an augmented matrix to reduced row
