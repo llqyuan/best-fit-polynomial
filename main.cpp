@@ -3,6 +3,7 @@
 #include <vector>
  #include "method_of_least_squares.h"
  #include "linear_algebra_objects.h"
+ #include "within.h"
 
 
 using namespace std;
@@ -18,11 +19,9 @@ struct posn {
 //   x coordinate in plist and false otherwise
 bool entry_exists(vector<posn> * plist, float x) 
 {
-    for (vector<posn> :: iterator it = plist->begin();
-         it != plist->end();
-         ++it)
+    for (int i = 0; i < plist->size(); ++i)
     {
-        if (within(x, (*it).x)) 
+        if (within(x, (plist->at(i)).x)) 
         {
             return true;
         }
@@ -34,19 +33,13 @@ bool entry_exists(vector<posn> * plist, float x)
 Matrix * least_squares_matrix(vector<posn> * plist, const int degree)
 {
     Matrix * m = new Matrix(plist.size(), degree + 1);
-    // todo I wanna iterate on the row number here, and get the row-th 
-    //   element of the vector
-    int row = 0;
-    for (vector<posn> :: iterator it = plist->begin();
-         it != plist->end();
-         ++it)
+    for (int row = 0; row < plist->size(); ++row)
     {
-        float x = it->x;
+        float x = (plist->at(row))->x;
         for (int col = 0; col < m->num_cols; ++col)
         {
             m->vals[row * m->num_cols + col] = pow(x, col);
         }
-        row += 1;
     }
     return m;
 }
@@ -55,21 +48,53 @@ Matrix * least_squares_matrix(vector<posn> * plist, const int degree)
 MathVector * least_squares_vector(vector<posn> * plist)
 {
     MathVector * v = new Vector(plist.size());
-    // todo ditto
-    int i = 0;
-    for (vector<posn> :: iterator it = plist->begin();
-         it != plist->end();
-         ++it)
+    for (int i = 0; i < plist->size(); ++i)
     {
-        float y = it->y;
+        float y = (plist->at(i)).y;
         v->vals[i] = y;
-        i += 1;
     }
     return v;
 }
 
 
-void pretty_print_polynomial(vector<posn> * plist);
+void pretty_print_polynomial(MathVector * v)
+{
+    if (v->len) {
+        cout << "f(x) = ";
+        bool print_plus = false;
+        for (int i = 0; i < v->len; ++i) {
+            if (within(v->vals[i], 0)) {
+                continue;
+            }
+
+            if (print_plus && v->vals[i] > 0) {
+                cout << " + ";
+            } else if (print_plus && v->vals[i] < 0) {
+                cout << " - ";
+            }
+            print_plus = true;
+
+            if (i == 0) {
+                cout << v->vals[0];
+
+            } else if (i == 1 && within(fabs(v->vals[i]), 1)) {
+                cout << "x";
+
+            } else if (i == 1) {
+                cout << fabs(v->vals[i]) << "x";
+
+            } else if (within(fabs(v->vals[i]), 1)) {
+                cout << "x^" << i;
+
+            } else {
+                cout << v->vals[i] << "x^" << i;
+            }
+        }
+    } else {
+        cout << "f(x) = 0";
+    }
+    cout << endl;
+}
 
 
 int main(void) 
