@@ -1,9 +1,11 @@
 #include <iostream>
 #include <cmath>
+#include <string>
+#include <sstream>
 #include <vector>
- #include "method_of_least_squares.h"
- #include "linear_algebra_objects.h"
- #include "within.h"
+#include "method_of_least_squares.h"
+#include "linear_algebra_objects.h"
+#include "within.h"
 
 
 using namespace std;
@@ -32,7 +34,7 @@ bool entry_exists(vector<posn> * plist, float x)
 
 Matrix * least_squares_matrix(vector<posn> * plist, const int degree)
 {
-    Matrix * m = new Matrix(plist.size(), degree + 1);
+    Matrix * m = new Matrix(plist->size(), degree + 1);
     for (int row = 0; row < plist->size(); ++row)
     {
         float x = (plist->at(row))->x;
@@ -47,7 +49,7 @@ Matrix * least_squares_matrix(vector<posn> * plist, const int degree)
 
 MathVector * least_squares_vector(vector<posn> * plist)
 {
-    MathVector * v = new Vector(plist.size());
+    MathVector * v = new Vector(plist->size());
     for (int i = 0; i < plist->size(); ++i)
     {
         float y = (plist->at(i)).y;
@@ -97,8 +99,28 @@ void pretty_print_polynomial(MathVector * v)
 }
 
 
+namespace coordinate_add_status 
+{
+    const unsigned int not_adding = 0;
+    const unsigned int adding_x = 1;
+    const unsigned int adding_y = 2;
+}
+
+
 int main(void) 
 {
     vector<posn> posn_list;
-    
+    const string add_cmd = "add";
+    const string remove_cmd = "remove";
+    const string calculate_cmd = "calculate";
+    const string print_cmd = "view added coordinates";
+    const string quit_cmd = "quit";
+    string command = "";
+
+    float x;
+    float y;
+    int add_status = coordinate_add_status :: not_adding;
+    while (getline(cin, command)) {
+        
+    }
 }
