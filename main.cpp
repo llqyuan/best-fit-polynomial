@@ -121,6 +121,31 @@ int main(void)
     float y;
     int add_status = coordinate_add_status :: not_adding;
     while (getline(cin, command)) {
-        
+        if (add_status) {
+            // something
+
+        } else if (command.compare(add_cmd) == 0) {
+            add_status = coordinate_add_status :: adding_x;
+
+        } else if (command.compare(remove_cmd) == 0) {
+            if (posn_list.size()) {
+                posn_list.pop_back();
+                cout << "Removed most recently added coordinate." << endl;
+            } else {
+                cout << "No coordinates added." << endl;
+            }
+
+        } else if (command.compare(calculate_cmd) == 0) {
+            // calculate
+
+        } else if (command.compare(print_cmd) == 0) {
+            // pretty print
+
+        } else if (command.compare(quit_cmd) == 0) {
+            break;
+
+        } else {
+            cout << "Invalid command: " << command << endl;
+        }
     }
 }
