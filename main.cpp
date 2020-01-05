@@ -109,7 +109,8 @@ void pretty_print_polynomial(MathVector * v)
 }
 
 
-// Used to keep track of different statuses when reading commands
+// Used to store constants for keeping track of different statuses 
+//   when reading commands
 namespace action_statuses 
 {
     const unsigned int no_action_occurring = 0;
@@ -119,14 +120,32 @@ namespace action_statuses
 }
 
 
-int main(void) 
+// Used to store constants to keep track of valid commands
+namespace commands
 {
-    vector<posn *> posn_list;
     const string add_cmd = "add";
     const string remove_cmd = "remove";
     const string calculate_cmd = "calculate";
     const string print_cmd = "view added";
     const string quit_cmd = "quit";
+    const string help_cmd = "help";
+
+    // print_commands() prints the valid commands
+    void print_commands(void) {
+        cout << "Commands: " 
+             << add_cmd << ", "
+             << remove_cmd << ", "
+             << calculate_cmd << ", "
+             << print_cmd << ", "
+             << help_cmd << ", "
+             << quit_cmd << "." << endl;
+    }
+}
+
+
+int main(void) 
+{
+    vector<posn *> posn_list;
     string command = "";
 
     float x;
@@ -134,12 +153,7 @@ int main(void)
     int status = action_statuses :: no_action_occurring;
     posn * to_add;
 
-    cout << "Commands: " 
-         << add_cmd << ", "
-         << remove_cmd << ", "
-         << calculate_cmd << ", "
-         << print_cmd << ","
-         << quit_cmd << "." << endl;
+    commands :: print_commands();
 
     while (getline(cin, command)) {
         if (status) {
@@ -149,6 +163,12 @@ int main(void)
                 if (!(sstream >> convert_to_float_temp)) {
                     cout << "Invalid entry: " << command << endl;
                     cout << "Enter a new x coordinate:" << endl;
+                    continue;
+                } else if (entry_exists(&posn_list, 
+                                         convert_to_float_temp)) {
+                    cout << convert_to_float_temp 
+                         << " already exists as an x coordinate. "
+                         << "Choose another x coordinate: " << endl;
                     continue;
                 }
                 to_add = new posn();
@@ -177,14 +197,14 @@ int main(void)
                 int degree;
                 if (!(sstream >> degree)) {
                     cout << "Invalid entry: " << command << endl;
-                    cout << "Choose the polynomial's degree " 
+                    cout << "Choose the polynomial's maximum degree " 
                          << "(integer between 1 and " 
                          << posn_list.size() - 1
                          << "):" << endl;
                     continue;
                 } else if (degree < 1 || degree > posn_list.size() - 1) {
                     cout << degree << " is an invalid degree." << endl;
-                    cout << "Choose the polynomial's degree " 
+                    cout << "Choose the polynomial's maximum degree "
                          << "(integer between 1 and " 
                          << posn_list.size() - 1
                          << "):" << endl;
@@ -194,13 +214,14 @@ int main(void)
                 MathVector * y = least_squares_vector(&posn_list);
                 MathVector * solution = 
                     MethodOfLeastSquares().least_squares_solution(X, y);
-                cout << "Best fit polynomial: " << endl;
+                cout << "Best fit polynomial (may be approximate, "
+                     << "due to float rounding): " << endl;
                 pretty_print_polynomial(solution);
                 delete X;
                 delete y;
                 delete solution;
                 status = action_statuses :: no_action_occurring;
-                
+
             } else {
                 cout << "Unrecognized status; "
                      << "setting status to default as precaution."
@@ -208,11 +229,16 @@ int main(void)
                 status = action_statuses :: no_action_occurring;
             }
 
-        } else if (command.compare(add_cmd) == 0) {
+        } else if (command.compare(commands :: help_cmd) == 0) {
+            cout << "Add data points as floats and calculate the best "
+                 << "fit polynomial." << endl;
+            commands :: print_commands();
+            
+        } else if (command.compare(commands :: add_cmd) == 0) {
             cout << "Enter an x coordinate:" << endl;
             status = action_statuses :: adding_x;
 
-        } else if (command.compare(remove_cmd) == 0) {
+        } else if (command.compare(commands :: remove_cmd) == 0) {
             if (posn_list.size()) {
                 delete posn_list.at(posn_list.size() - 1);
                 posn_list.pop_back();
@@ -221,7 +247,7 @@ int main(void)
                 cout << "No coordinates added." << endl;
             }
 
-        } else if (command.compare(calculate_cmd) == 0) {
+        } else if (command.compare(commands :: calculate_cmd) == 0) {
             if (posn_list.size() >= 2) {
                 cout << "Choose the polynomial's degree " 
                      << "(integer between 1 and " 
@@ -232,7 +258,7 @@ int main(void)
                 cout << "Not enough coordinates stored." << endl;
             }
 
-        } else if (command.compare(print_cmd) == 0) {
+        } else if (command.compare(commands :: print_cmd) == 0) {
             if (posn_list.size()) {
                 cout << "List of coordinates stored so far:" << endl;
                 for (int i = 0; i < posn_list.size(); ++i) {
@@ -244,7 +270,7 @@ int main(void)
                 cout << "None stored." << endl;
             }
 
-        } else if (command.compare(quit_cmd) == 0) {
+        } else if (command.compare(commands :: quit_cmd) == 0) {
             break;
 
         } else {
