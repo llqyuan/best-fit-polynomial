@@ -99,11 +99,12 @@ void pretty_print_polynomial(MathVector * v)
 }
 
 
-namespace coordinate_add_status 
+namespace action_statuses 
 {
-    const unsigned int not_adding = 0;
+    const unsigned int default = 0;
     const unsigned int adding_x = 1;
     const unsigned int adding_y = 2;
+    const unsigned int calculating = 3;
 }
 
 
@@ -119,13 +120,13 @@ int main(void)
 
     float x;
     float y;
-    int add_status = coordinate_add_status :: not_adding;
+    int status = action_statuses :: default;
     while (getline(cin, command)) {
-        if (add_status) {
+        if (status) {
             // something
 
         } else if (command.compare(add_cmd) == 0) {
-            add_status = coordinate_add_status :: adding_x;
+            status = action_statuses :: adding_x;
 
         } else if (command.compare(remove_cmd) == 0) {
             if (posn_list.size()) {
@@ -136,12 +137,22 @@ int main(void)
             }
 
         } else if (command.compare(calculate_cmd) == 0) {
-            // calculate
+            status = action_statuses :: calculating;
 
         } else if (command.compare(print_cmd) == 0) {
-            // pretty print
+            if (posn_list.size()) {
+                cout << "List of coordinates stored so far:" << endl;
+                for (int i = 0; i < posn_list.size(); ++i) {
+                    cout << "(" << posn_list.at(i).x 
+                         << ", " << posn_list.at(i).y 
+                         << ")" << endl;
+                }
+            } else {
+                cout << "None stored." << endl;
+            }
 
         } else if (command.compare(quit_cmd) == 0) {
+            cout << "Quitting." << endl;
             break;
 
         } else {
