@@ -1,6 +1,7 @@
 #include "method_of_least_squares.h"
 #include "linear_algebra_objects.h"
 #include "reducing.h"
+#include "within.h"
 #include <cassert>
 
 
@@ -16,7 +17,7 @@ MethodOfLeastSquares :: ~MethodOfLeastSquares() {}
 MathVector * MethodOfLeastSquares :: least_squares_solution(Matrix * X,
                                                             MathVector * y)
 {
-    Reducing * r = Reducing();
+    Reducing * r = new Reducing();
     Matrix * X_transpose = X->transpose(X);
     Matrix * X_transpose_times_X = X->matrix_matrix_multiply(
         X_transpose, X);

@@ -22,13 +22,13 @@ class MethodOfLeastSquares {
         //   in the normal system (X^T)*X*a = (X^T)*y)
         // effects: allocates memory (must call destructor on 
         //   returned pointer)
-        MathVector * least_squares_solution(Matrix * X, Vector * y);
+        MathVector * least_squares_solution(Matrix * X, MathVector * y);
     
     private:
         // verify_identity_matrix(m) performs assertions that verify 
         //   that m is an identity matrix.
         void verify_identity_matrix(Matrix * m);
-}
+};
 
 
 #endif
