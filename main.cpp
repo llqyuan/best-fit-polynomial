@@ -89,7 +89,7 @@ void pretty_print_polynomial(MathVector * v)
                 cout << "x^" << i;
 
             } else {
-                cout << v->vals[i] << "x^" << i;
+                cout << fabs(v->vals[i]) << "x^" << i;
             }
         }
     } else {
@@ -114,7 +114,7 @@ int main(void)
     const string add_cmd = "add";
     const string remove_cmd = "remove";
     const string calculate_cmd = "calculate";
-    const string print_cmd = "view added coordinates";
+    const string print_cmd = "view added";
     const string quit_cmd = "quit";
     string command = "";
 
@@ -122,6 +122,13 @@ int main(void)
     float y;
     int status = action_statuses :: no_action_occurring;
     posn * to_add;
+
+    cout << "Commands: " 
+         << add_cmd << ", "
+         << remove_cmd << ", "
+         << calculate_cmd << ", "
+         << print_cmd << ","
+         << quit_cmd << "." << endl;
 
     while (getline(cin, command)) {
         if (status) {
@@ -153,7 +160,37 @@ int main(void)
                      << to_add->x << ", " << to_add->y << endl;
                 status = action_statuses :: no_action_occurring;
             } else if (status == action_statuses :: calculating) {
-                cout << "fififdij" << endl;
+                istringstream sstream(command);
+                int degree;
+                if (!(sstream >> degree)) {
+                    cout << "Invalid entry: " << command << endl;
+                    cout << "Choose the polynomial's degree " 
+                         << "(integer between 1 and " 
+                         << posn_list.size() - 1
+                         << "):" << endl;
+                    continue;
+                } else if (degree < 1 || degree > posn_list.size() - 1) {
+                    cout << degree << " is an invalid degree." << endl;
+                    cout << "Choose the polynomial's degree " 
+                         << "(integer between 1 and " 
+                         << posn_list.size() - 1
+                         << "):" << endl;
+                    continue;
+                }
+                Matrix * X = least_squares_matrix(&posn_list, degree);
+                MathVector * y = least_squares_vector(&posn_list);
+                MathVector * solution = 
+                    MethodOfLeastSquares().least_squares_solution(X, y);
+                cout << "Best fit polynomial: " << endl;
+                pretty_print_polynomial(solution);
+                delete X;
+                delete y;
+                delete solution;
+                status = action_statuses :: no_action_occurring;
+            } else {
+                cout << "Unrecognized status; "
+                     << "setting status to default as precaution."
+                     << endl;
                 status = action_statuses :: no_action_occurring;
             }
 
@@ -171,7 +208,15 @@ int main(void)
             }
 
         } else if (command.compare(calculate_cmd) == 0) {
-            status = action_statuses :: calculating;
+            if (posn_list.size() >= 2) {
+                cout << "Choose the polynomial's degree " 
+                     << "(integer between 1 and " 
+                     << posn_list.size() - 1
+                     << "):" << endl;
+                status = action_statuses :: calculating;
+            } else {
+                cout << "Not enough coordinates stored." << endl;
+            }
 
         } else if (command.compare(print_cmd) == 0) {
             if (posn_list.size()) {
