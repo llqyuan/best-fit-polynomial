@@ -249,7 +249,7 @@ int main(void)
 
         } else if (command.compare(commands :: calculate_cmd) == 0) {
             if (posn_list.size() >= 2) {
-                cout << "Choose the polynomial's degree " 
+                cout << "Choose the polynomial's maxmimum degree " 
                      << "(integer between 1 and " 
                      << posn_list.size() - 1
                      << "):" << endl;
