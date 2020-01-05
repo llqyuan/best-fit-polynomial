@@ -121,12 +121,41 @@ int main(void)
     float x;
     float y;
     int status = action_statuses :: default;
+    posn to_add;
+
     while (getline(cin, command)) {
         if (status) {
-            // something
+            if (status == action_statuses:: adding_x) {
+                istringstream sstream(command);
+                float convert_to_float_temp;
+                if (!(command >> convert_to_float_temp)) {
+                    cout << "Invalid entry: " << command << endl;
+                    cout << "Enter a new x coordinate:" << endl;
+                    continue;
+                }
+                to_add.x = convert_to_float_temp;
+                cout << "x: " << to_add.x << endl;
+                cout << "Enter a y coordinate:" << endl;
+                status = action_statuses :: adding_y;
+            } else if (status == action_statuses :: adding_y) {
+                istringstream sstream(command);
+                float convert_to_float_temp;
+                if (!(command >> convert_to_float_temp)) {
+                    cout << "Invalid entry: " << command << endl;
+                    cout << "Enter a new y coordinate:" << endl;
+                    continue;
+                }
+                to_add.y = convert_to_float_temp;
+                cout << "y: " << to_add.y << endl;
+                posn_list.push_back(to_add);
+                cout << "Added coordinate: " 
+                     << to_add.x << ", " << to_add.y << endl;
+                status = action_statuses :: default;
+            }
 
         } else if (command.compare(add_cmd) == 0) {
             status = action_statuses :: adding_x;
+            cout << "Enter an x coordinate:" << endl;
 
         } else if (command.compare(remove_cmd) == 0) {
             if (posn_list.size()) {
