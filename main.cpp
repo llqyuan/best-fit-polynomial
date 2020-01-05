@@ -32,6 +32,10 @@ bool entry_exists(vector<posn *> * plist, float x)
 }
 
 
+// least_squares_matrix(plist, degree) returns the matrix X in
+//   the normal system (X^T)*X*a = (X^T)*y
+// effects: allocates memory (must call destructor on returned
+//   pointer)
 Matrix * least_squares_matrix(vector<posn *> * plist, const int degree)
 {
     Matrix * m = new Matrix(plist->size(), degree + 1);
@@ -47,6 +51,10 @@ Matrix * least_squares_matrix(vector<posn *> * plist, const int degree)
 }
 
 
+// least_squares_vector(plist) returns the vector  y in the
+//   normal system (X^T)*X*a = (X^T)*y
+// effects: allocates memory (must call destructor on returned
+//   pointer)
 MathVector * least_squares_vector(vector<posn *> * plist)
 {
     MathVector * v = new MathVector(plist->size());
@@ -59,6 +67,8 @@ MathVector * least_squares_vector(vector<posn *> * plist)
 }
 
 
+// pretty_print_polynomial(v) prints v as a polynomial
+// effects: prints output
 void pretty_print_polynomial(MathVector * v)
 {
     if (v->len) {
@@ -99,6 +109,7 @@ void pretty_print_polynomial(MathVector * v)
 }
 
 
+// Used to keep track of different statuses when reading commands
 namespace action_statuses 
 {
     const unsigned int no_action_occurring = 0;
@@ -132,7 +143,7 @@ int main(void)
 
     while (getline(cin, command)) {
         if (status) {
-            if (status == action_statuses:: adding_x) {
+            if (status == action_statuses :: adding_x) {
                 istringstream sstream(command);
                 float convert_to_float_temp;
                 if (!(sstream >> convert_to_float_temp)) {
@@ -145,6 +156,7 @@ int main(void)
                 cout << "x: " << to_add->x << endl;
                 cout << "Enter a y coordinate:" << endl;
                 status = action_statuses :: adding_y;
+
             } else if (status == action_statuses :: adding_y) {
                 istringstream sstream(command);
                 float convert_to_float_temp;
@@ -159,6 +171,7 @@ int main(void)
                 cout << "Added coordinate: " 
                      << to_add->x << ", " << to_add->y << endl;
                 status = action_statuses :: no_action_occurring;
+
             } else if (status == action_statuses :: calculating) {
                 istringstream sstream(command);
                 int degree;
@@ -187,6 +200,7 @@ int main(void)
                 delete y;
                 delete solution;
                 status = action_statuses :: no_action_occurring;
+                
             } else {
                 cout << "Unrecognized status; "
                      << "setting status to default as precaution."
@@ -195,8 +209,8 @@ int main(void)
             }
 
         } else if (command.compare(add_cmd) == 0) {
-            status = action_statuses :: adding_x;
             cout << "Enter an x coordinate:" << endl;
+            status = action_statuses :: adding_x;
 
         } else if (command.compare(remove_cmd) == 0) {
             if (posn_list.size()) {
