@@ -57,7 +57,7 @@ class UserInputOutput {
         //   x coordinate in plist and false otherwise
         bool entry_exists(vector<posn *> * plist, float x) 
         {
-            for (int i = 0; i < plist->size(); ++i)
+            for (unsigned int i = 0; i < plist->size(); ++i)
             {
                 if (within(x, (plist->at(i))->x)) 
                 {
@@ -75,7 +75,7 @@ class UserInputOutput {
                                       const int degree)
         {
             Matrix * m = new Matrix(plist->size(), degree + 1);
-            for (int row = 0; row < plist->size(); ++row)
+            for (unsigned int row = 0; row < plist->size(); ++row)
             {
                 float x = (plist->at(row))->x;
                 for (int col = 0; col < m->num_cols; ++col)
@@ -93,7 +93,7 @@ class UserInputOutput {
         MathVector * least_squares_vector(vector<posn *> * plist)
         {
             MathVector * v = new MathVector(plist->size());
-            for (int i = 0; i < plist->size(); ++i)
+            for (unsigned int i = 0; i < plist->size(); ++i)
             {
                 float y = (plist->at(i))->y;
                 v->vals[i] = y;
@@ -177,9 +177,9 @@ class UserInputOutput {
                                 << "Choose another x coordinate: " << endl;
                             continue;
                         }
-                        to_add = new posn();
-                        to_add->x = convert_to_float_temp;
-                        cout << "x: " << to_add->x << endl;
+                        
+                        x = convert_to_float_temp;
+                        cout << "x: " << x << endl;
                         cout << "Enter a y coordinate:" << endl;
                         status = action_statuses :: adding_y;
 
@@ -191,8 +191,11 @@ class UserInputOutput {
                             cout << "Enter a new y coordinate:" << endl;
                             continue;
                         }
-                        to_add->y = convert_to_float_temp;
-                        cout << "y: " << to_add->y << endl;
+                        y = convert_to_float_temp;
+                        cout << "y: " << y << endl;
+                        to_add = new posn();
+                        to_add->x = x;
+                        to_add->y = y;
                         posn_list.push_back(to_add);
                         cout << "Added coordinate: " 
                             << to_add->x << ", " << to_add->y << endl;
@@ -208,7 +211,8 @@ class UserInputOutput {
                                 << posn_list.size() - 1
                                 << "):" << endl;
                             continue;
-                        } else if (degree < 1 || degree > posn_list.size() - 1) {
+                        } else if (degree < 1 || 
+                                   (unsigned int) degree > posn_list.size() - 1) {
                             cout << degree << " is an invalid degree." << endl;
                             cout << "Choose the polynomial's maximum degree "
                                 << "(integer between 1 and " 
@@ -269,7 +273,7 @@ class UserInputOutput {
                 } else if (command.compare(commands :: print_cmd) == 0) {
                     if (posn_list.size()) {
                         cout << "List of coordinates stored so far:" << endl;
-                        for (int i = 0; i < posn_list.size(); ++i) {
+                        for (unsigned int i = 0; i < posn_list.size(); ++i) {
                             cout << "(" << posn_list.at(i)->x 
                                 << ", " << posn_list.at(i)->y 
                                 << ")" << endl;
@@ -286,10 +290,7 @@ class UserInputOutput {
                 }
             }
             cout << "Quitting." << endl;
-            if (status == action_statuses :: adding_y) {
-                delete to_add;
-            }
-            for (int i = 0; i < posn_list.size(); ++i) {
+            for (unsigned int i = 0; i < posn_list.size(); ++i) {
                 delete posn_list.at(i);
             }
         }
